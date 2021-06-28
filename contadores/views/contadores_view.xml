@@ -1,0 +1,129 @@
+<odoo>
+	<data>
+		
+		<!-- vistas lista -->
+		<record id="view_contadores_tree" model="ir.ui.view">
+			<field name="name">contadores.tree</field>
+			<field name="model">contadores.contadores</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+
+		<!-- vistas formulario -->
+		<record id="view_contadores_form" model="ir.ui.view">
+      		<field name="name">contadores.form</field>
+      		<field name="model">contadores.contadores</field>
+      		<field name="arch" type="xml">
+				<form>
+				    <header>
+				        <!--<field name="estado" widget="statusbar"/>-->
+				    </header>
+				    <sheet>
+				        <div>
+				            <h1>
+				                <span>
+				                    <field name="name" readonly="1"/>
+				                    <field name="id" />
+				                </span>
+				                <button name="genera_excel" string="Generar reporte" type="object" confirm="Se generara 1 reporte excel con los contratos selecionados 1 hoja o sheet por cada contrato"/>   
+				            </h1>
+				        </div>
+				        <field name="excelD" readonly="1"/>
+				        <notebook name="studio_notebook_I0Vos">
+				            <page name="studio_page_p6ZJo" string="Datos Cliente">
+							    <group name="studio_group_p6ZJo">
+						            <field name="cliente" options="{'no_create_edit':True,'no_create':True}"/>
+					                <field name="anio"/>
+					                <field name="mes"/>
+					                <button name="carga_contadores" string="Cargar contadores" type="object" confirm="Se cargaran los contadores en case de ya tener contadores se sustituiran"/>
+						            <field name="csvD" readonly="0"/>
+			                	</group>
+				                
+		                        <button name="selecionaTODOContratos" string="Selecionar todos los contrato" type="object" />
+		                        <button name="desSelecionaTODOContratos" string="Deselecionar todos los contrato" type="object" />
+		            		
+								<!--
+		            			<field style="color:black" name="x_studio_contratos" delete="0"  string="Contratos" domain="[('cliente','=',cliente)]" attrs="{}">
+				            		<tree delete="0" string="cx"  editable="bottom" limit="1000" options="{'no_create_edit':True,'no_create':True}">
+				                        <field name="name" readonly="1"/>
+				                        <field name="x_studio_cobrar_contrato" />
+				                	</tree>
+				          		</field>     
+				                -->
+				    		</page>
+				    		<page name="studio_page_I0Vos" string="Contadores">
+				                <group name="studio_group_I0Vos">
+				                	<button name="carga_contadores_fac_invo" string="Terminar de capturar factura" type="object" confirm="Se generaran SO's en base a los contratos selecionados"/>
+					                <button name="selecionaTODOLecturas" string="Selecionar todos las lecturas" type="object" />
+					                <button name="desSelecionaTODOLecturas" string="Deselecionar todos las lecturas" type="object" />
+				                    <field name="x_studio_estado_capturas" string="Estado Capturas:"/>
+				                    <field name="prefacturas" widget="html" readonly="1"/>     
+									<field style="color:black" name="detalle" delete="0"  string="Contadores" domain="[]" attrs="{}">
+				                		<tree delete="0" string="cx"  editable="bottom" limit="10">
+						                    <field name="indice" readonly="1" />
+					                        <field name="serieEquipo" />
+					                        <field name="desc" readonly="1"/>
+				                           	<field name="bnColor" /> 
+				                           	<field name="ubi" string="ubicación" readonly="1"/> 
+						                   	<field name="producto" invisible='0'/> 
+						                   	<field name="modelo" invisible='1'/>
+						                   	<field name="ultimaLecturaBN" />
+					                        <field name="lecturaAnteriorBN" />
+					   						<field name="periodo"/>
+					   						<field name="ultimaLecturaColor" />
+					                        <field name="lecturaAnteriorColor" />
+					                        <field name="periodoA" />
+					                        <field name="capturar" />
+					                        <field name="comentario"/>
+					                        <field name="servicio" readonly="1"/>
+					                        <field name="archivo"/>
+				                 		</tree>
+				          			</field>
+				          			<field name="archivoglobal" widget="many2many_binary"/> 
+				                </group>
+				                <field name="x_studio_facturas" string="Facturas"/>
+				            </page>
+				        </notebook>
+				    </sheet>
+				    <!--
+				    <div class="oe_chatter">
+				        <field name="message_follower_ids" widget="mail_followers" invisible="1"/>
+				        <field name="activity_ids" widget="mail_activity" invisible="1"/>
+				        <field name="message_ids" widget="mail_thread" invisible="1"/>
+				    </div>
+				    -->
+				    
+				</form>
+			</field>
+
+		</record>
+
+
+
+		<!-- acciones de ventana -->
+		<record model="ir.actions.act_window" id="contadores_action_window">
+		    <field name="name">Contadores</field>
+			<field name="res_model">contadores.contadores</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_contadores_tree"/>
+	    </record>
+
+
+		<!-- Menus -->
+		<menuitem id="contadores_root"
+              name="Contadores"
+              web_icon="contadores, static/description/helpdesk-icon.png"
+              />
+
+        <menuitem id="contadores_contadores"
+              name="Contadores"
+              parent="contadores_root"
+              sequence="0"
+              action="contadores_action_window"
+              />
+
+	</data>
+</odoo>

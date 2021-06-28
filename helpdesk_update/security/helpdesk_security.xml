@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <openerp>
+        <data noupdate="0">
+            <record id="helpdesk_update_user_rule" model="ir.rule">
+                <field name="name">ToDo Tasks only for owner</field>
+                <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+                <field name="domain_force">
+                    [('create_uid','=',user.id)]
+                </field>
+                <field name="perm_read" eval="True"/>
+                <field name="perm_write" eval="True"/>
+                <field name="perm_create" eval="True"/>
+                <field name="perm_unlink" eval="True"/>
+                <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+            </record>
+
+            <record model="ir.module.category" id="module_category_helpdesk_update">
+                <field name="name">Mesa de ayuda</field>
+                <field name="description">Permisos para mesa de ayuda</field>
+            </record>
+
+            <record id="group_helpdesk_solo_ve_administrador" model="res.groups">
+                <field name="name">Solo ve administrador</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_cambio_a_cotizacion" model="res.groups">
+                <field name="name">Cambia a cotización</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_cambio_a_atencion" model="res.groups">
+                <field name="name">Cambia a atención</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_cambio_a_resuelto" model="res.groups">
+                <field name="name">Cambia a resuelto</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_cambio_a_cerrado" model="res.groups">
+                <field name="name">Cambia a cerrado</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_cambio_a_cancelado" model="res.groups">
+                <field name="name">Cambia a cancelado</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_cambio_a_atencion_ticket_cerrado" model="res.groups">
+                <field name="name">Cambia a atención ticket cerrado</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_valida_refaccion" model="res.groups">
+                <field name="name">Valida refacción</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_valida_toner" model="res.groups">
+                <field name="name">Valida tóner</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_editar_contadores" model="res.groups">
+                <field name="name">Editar contadores</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_agregar_diagnostico" model="res.groups">
+                <field name="name">Agregar diagnostico</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_agregar_y_editar_contacto" model="res.groups">
+                <field name="name">Agregar y editar contactos</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_valida_toner" model="res.groups">
+                <field name="name">Valida toner</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_agregar_refacciones" model="res.groups">
+                <field name="name">Agregar refacciones</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_agregar_contadores" model="res.groups">
+                <field name="name">Agregar contadores(DCAS)</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_mas_detalle_mesa_de_servicio" model="res.groups">
+                <field name="name">Más detalle mesa de servicio</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_crear_con_serie_mesa_de_servicio" model="res.groups">
+                <field name="name">Crear con serie para mesa de servicio</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+            <record id="group_helpdesk_agregar_contacto" model="res.groups">
+                <field name="name">Agregar contacto a localidad</field>
+                <field name="category_id" ref="module_category_helpdesk_update"/>
+            </record>
+        </data>
+    </openerp>

@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+    	<template id="assets_backend_1" inherit_id="web.assets_backend" name="Custom Module 1">
+    	<xpath expr="." positio="inside">
+           	<script type="text/javascript" src="/sale_order_compatibles/static/src/js/sale_order.js"></script>
+           </xpath>
+         </template>
+    </data>
+</odoo>

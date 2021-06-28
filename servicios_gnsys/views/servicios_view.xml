@@ -1,0 +1,123 @@
+<odoo>
+	<data>
+
+		<!-- vistas lista -->
+		<record id="view_servicios_tree" model="ir.ui.view">
+			<field name="name">servicios.tree</field>
+			<field name="model">servicios</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+
+
+		<!-- vistas formulario -->
+		<record id="view_servicios_form" model="ir.ui.view">
+			<field name="name">servicios.form</field>
+			<field name="model">servicios</field>
+			<field name="arch" type="xml">
+				<form>
+				    <sheet string="Servicios">
+				        <group>
+				            <group>
+				                <field required="1" name="contrato"  />
+				                <field name="rfcCliente" modifiers="{}"/>
+				                <field  name="idtec" readonly="1" />
+				                <field name="id" modifiers="{}" />
+				                
+				                <field  name="nombreAnte" readonly="1"  />
+				                <field  name="serviciosNombre" readonly="0"  />
+
+				            </group>
+				            <group>
+				                <field  name="servActivo" />
+				            </group>
+				        </group>
+				        <group>
+				            <group>
+				                <field name="tipo" modifiers="{}"/>
+				                <field name="rentaMensual" modifiers="{}"/>
+				            </group>
+				            <group >
+				                <field name="diaCorte" modifiers="{}"/>
+				                <field name="diaCorteT" modifiers="{}"/>
+				            </group>
+				        </group>
+				        <group>
+				            <group>
+				                <field name="bolsaBN" readonly="0" modifiers="{}"/>
+				                <field name="clickExcedenteBN" readonly="0"  modifiers="{}"/>
+				                <field name="bolsaColor" modifiers="{}" readonly="0"/>
+				                <field name="clickExcedenteColor" modifiers="{}" readonly="0"/>
+				                <field name="fechaDeInicioDeServicio" widget="date" modifiers="{}" readonly="0"/>
+				                <field name="fechaDeFinDeServicio" widget="date" modifiers="{}" readonly="0"/>
+				            </group>
+				            
+				            
+				            <group string="Productos SAT">
+				                <field name="renta" modifiers="{}"/>
+				                <field name="impresiones" modifiers="{}"/>
+				                       
+				            
+				                <field name="cantidad"  modifiers="{}"/>
+				                <field name="importe" readonly="0" modifiers="{}"/>
+				                <field name="retencion" readonly="0" modifiers="{}"/>
+				                <field name="totalRetencion" readonly="0" modifiers="{}"/>
+				                <field name="nivelfactu" readonly="0"  modifiers="{}"/>
+				                <field name="codigosg"  readonly="1" modifiers="{}"/>
+				            
+				            </group>
+				            
+				            
+				        </group>
+				        <group>
+				            <field name="comentarioServ" modifiers="{}"/>
+				            <field name="polizaServicios" modifiers="{}"/>
+				        </group>
+				        <notebook name="studio_notebook_Su3xe">
+				            <page name="studio_page_Su3xe" string="Series">
+				                <group name="studio_group_Su3xe">
+				                    <field name="series" colspan="4" modifiers="{}" style="width:950px"/>
+				                </group>
+				            </page>
+				            <page name="studio_page_vjTNU" string="Solicitud">
+				                <group name="studio_group_vjTNU">
+				                    <button name="crear_solicitud_arrendamineto" string="Generar solicitud" type="object" confirm="Se generara una solicitud"/>
+				                    <field name="x_studio_solicitud" string="Solicitud"/>
+				                    <field name="x_studio_field_7jBI3"  widget="many2many"/>
+				                </group>
+				            </page>
+				        </notebook>
+				    </sheet>
+				</form>
+			</field>
+		</record>
+
+		<!-- acciones de ventana -->
+		<record model="ir.actions.act_window" id="servicios_action_window">
+		    <field name="name">Servicios</field>
+			<field name="res_model">servicios</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_servicios_tree"/>
+	    </record>
+
+
+		<!-- Menus -->
+		<menuitem id="servicios_root"
+              name="Servicios"
+              web_icon="servicios_gnsys, static/description/contrato.png"
+              />
+
+        <menuitem id="servicios"
+              name="Servicios"
+              parent="servicios_root"
+              sequence="0"
+              action="servicios_action_window"
+              />
+
+
+		
+	</data>
+</odoo>

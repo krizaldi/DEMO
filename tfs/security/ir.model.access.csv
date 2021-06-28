@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tfs_tfs,tfs.tfs,model_tfs_tfs,stock.group_stock_manager,1,1,1,1
+access_tfs_evidencia,tfs.evidencia,model_tfs_evidencia,stock.group_stock_manager,1,1,1,1
+access_tfs_notificacion_ticket,tfs.notificacion.ticket,model_tfs_notificacion_ticket,stock.group_stock_manager,1,1,1,1
+access_tfs_ticket,tfs.ticket,model_tfs_ticket,stock.group_stock_manager,1,1,1,1

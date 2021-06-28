@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="stock.view_production_lot_form" model="ir.ui.view">
+      <field name="name">stock.production.lot.form</field>
+      <field name="model">stock.production.lot</field>
+      <field name="arch" type="xml">
+          <form string="Lots/Serial Numbers">
+            <sheet>
+                <!-- vista odoo 14
+                <field name="display_complete" invisible="1"/>
+                <div class="oe_button_box" name="button_box" attrs="{'invisible': [('display_complete', '=', False)]}">
+                        <button name="action_lot_open_quants" icon="fa-arrows" class="oe_stat_button" string="Location" type="object"/>
+                        <button name="372" icon="fa-arrow-up" class="oe_stat_button" string="Traceability" type="action"/>
+                </div>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" placeholder="e.g. LOT/0001/20121"/>
+                    </h1>
+                </div>
+                <group name="main_group">
+                    <group>
+                        <field name="product_id" context="{'default_type': 'product'}" readonly="context.get('set_product_readonly', False)" force_save="1" help="Product this lot/serial number contains. You cannot change it anymore if it has already been moved."/>
+                        <label for="product_qty" attrs="{'invisible': [('display_complete', '=', False)]}"/>
+                        <div class="o_row" attrs="{'invisible': [('display_complete', '=', False)]}">
+                            <field name="product_qty"/>
+                            <field name="product_uom_id" readonly="1" groups="uom.group_uom"/>
+                        </div>
+                        <field name="ref"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group/>
+                </group>
+                <notebook attrs="{'invisible': [('display_complete', '=', False)]}">
+                    <page string="Description" name="description">
+                        <field name="note"/>
+                    </page>
+                </notebook>
+                --> 
+                <field name="display_complete" invisible="1"/>
+                <div class="oe_button_box" name="button_box" attrs="{'invisible': [('display_complete', '=', False)]}">
+                        <button name="action_lot_open_quants" icon="fa-arrows" class="oe_stat_button" string="Location" type="object"/>
+                        <button name="%(stock.action_stock_report)d" icon="fa-arrow-up" class="oe_stat_button" string="Traceability" type="action"/>
+                </div>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name" placeholder="e.g. LOT/0001/20121"/>
+                    </h1>
+                </div>
+                <group name="main_group" invisible="1">
+                    <group>
+                        <field name="product_id" context="{'default_type': 'product'}" readonly="context.get('set_product_readonly', False)" force_save="1" help="Product this lot/serial number contains. You cannot change it anymore if it has already been moved."/>
+                        <label for="product_qty" attrs="{'invisible': [('display_complete', '=', False)]}"/>
+                        <div class="o_row" attrs="{'invisible': [('display_complete', '=', False)]}">
+                            <field name="product_qty"/>
+                            <field name="product_uom_id" readonly="1" groups="uom.group_uom"/>
+                        </div>
+                        <field name="ref"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group/>
+                </group>
+                <notebook invisible="1"><!-- attrs="{'invisible': [('display_complete', '=', False)]}" -->
+                    <page string="Description" name="description">
+                        <field name="note"/>
+                    </page>
+                </notebook>
+
+                <notebook>
+                    <page string="Tickets" name="tickets">
+                        <field name="html" widget="html"/>
+                    </page>
+                    <page string="Lecturas" name="lecturas">
+                        <group>
+                            <group>
+                                <field name="x_studio_field_PYss4">
+                                    <tree>
+                                        <field name="contadorMono"/>
+                                        <field name="contadorColor"/>
+                                        <field name="x_studio_field_no6Rb"/>
+                                        <field name="x_studio_fecha_texto_anio"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group>
+                                <field name="x_studio_ultimalecturam"/>
+                                <field name="x_studio_lec_ant_bn"/>
+                                <field name="x_studio_pg_proc"/>
+                                <field name="x_studio_ultimalecturacolor"/>
+                                <field name="x_studio_lec_ant_color"/>
+                                <field name="x_studio_pg_proc_color"/>
+                                <field name="x_studio_periodo"/>
+                            </group>
+                        </group>
+                        
+                    </page>
+                    <page string="Toner" name="toner">
+                        <field name="x_studio_toner_1">
+                            <tree>
+                                <field name="x_studio_descripcion"/>
+                                <field name="contadorMono"/>
+                                <field name="contadorColor"/>
+                                <field name="porcentajeNegro"/>
+                                <field name="porcentajeAmarillo"/>
+                                <field name="porcentajeCian"/>
+                                <field name="porcentajeMagenta"/>
+                                <field name="x_studio_toner_negro"/>
+                                <field name="x_studio_toner_amarillo"/>
+                                <field name="x_studio_toner_cian"/>
+                                <field name="x_studio_toner_magenta"/>
+                                <field name="create_date"/>
+                                <field name="x_studio_fecha"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <!--
+                    <page string="Historico de componentes" name="componentes">
+                        <field name="x_studio_histrico_de_componentes">
+                            <tree>
+                                <field name="create_date"/>
+                                <field name="write_uid"/>
+                                <field name="write_date"/>
+                                <field name="create_uid"/>
+                                <field name="x_studio_field_MH4DO"/>
+                                <field name="x_tipo"/>
+                                <field name="x_studio_modelo"/>
+                                <field name="x_studio_cantidad"/>
+                                <field name="x_studio_fecha_de_entrega"/>
+                                <field name="x_studio_ticket"/>
+                                <field name="x_studio_contador_bn"/>
+                                <field name="x_studio_contador_color"/>
+                            </tree>
+                        </field>
+                    </page>
+                    -->
+                    <!--
+                    <page string="Solicitudes" name="solicitudes">
+                        <field name="x_studio_field_Q3Qpi">
+                            <tree>
+                                <field name="id"/>
+                                <field name="name"/>
+                                <field name="x_studio_tipo_de_solicitud"/>
+                                <field name="state"/>
+                                <field name="x_studio_series_retiro"/>
+                                <field name="tickets" widget="many2many_tags"/>
+                                <field name="commitment_date"/>
+                                <field name="expected_date"/>
+                                <field name="partner_id"/>
+                                <field name="x_studio_localidad"/>
+                                <field name="user_id"/>
+                                <field name="amount_total"/>
+                            </tree>
+                        </field>
+                    </page>
+                    -->
+                    <!--
+                    <page string="H.Clientes" name="clientes">
+                        <field name="clientes">
+                            <tree>
+                                <field name="fecha"/>
+                                <field name="fechaTexto"/>
+                                <field name="origen"/>
+                                <field name="destino"/>
+                                <field name="localidad"/>
+                                <field name="contadorBNPag"/>
+                                <field name="contadorColorPag"/>
+                                <field name="contadorBNML"/>
+                                <field name="contadorColorML"/>
+                                <field name="causa"/>
+                            </tree>
+                        </field>
+                    </page>
+                -->
+                    <page string="Cliente" name="cliente">
+                        <group>
+                            <group>
+                                <field name="x_studio_localidad_2"/>
+                                <field name="x_studio_cliente"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Quants" name="quants">
+                        <field name="quant_ids"/>
+                    </page>
+                </notebook>
+                <group>
+                    <group>
+                        <field name="product_qty" readonly="1"/>
+                        <field name="x_studio_categoria_de_producto_3"/>
+                        <field name="x_studio_idotrosistmp"/>
+                        <field name="x_studio_idreal" readonly="1"/>
+                        <field name="x_studio_contrato" readonly="1"/>
+                        <field name="x_studio_etapa"/>
+                        <field name="id" readonly="1"/>
+                        <field name="product_id" domain="[('type', 'in', ['product', 'consu'])]"/>
+                        <field name="x_studio_color_bn"/>
+                        <field name="x_studio_demo"/>
+                        <field name="x_studio_mini"/>
+                        <field name="x_studio_cambio"/>
+                        <field name="x_studio_categoria_de_producto"/>
+                        <field name="x_studio_estado"/>
+                        <field name="x_studio_test" readonly="1"/>
+                        <field name="x_studio_venta"/>
+                        <field name="x_studio_ubicacion_id"/>
+                        <field name="x_studio_ultma_ubicacin"/>
+                        <!--<field name="x_studio_ultima_ubicacin"/>-->
+                        <field name="x_studio_ubicaciontest"/>
+                        <!--<field name="x_studio_locacion_recortada"/>-->
+                        <field name="x_studio_delegacion"/>
+                        <field name="x_studio_calle"/>
+                        <field name="x_studio_cp"/>
+                        <field name="x_studio_interior"/>
+                        <field name="x_studio_exterior"/>
+                        <field name="x_studio_colonia"/>
+                        <field name="x_studio_ciudad"/>
+                        <field name="x_studio_estado_1"/>
+                        <field name="x_studio_centro_de_costos"/>
+                        <field name="x_studio_zona"/>
+                        <field name="x_studio_pais"/>
+                        <field name="x_studio_d_envio"/>
+                        <field name="ref"/>
+                        <field name="x_studio_ultimo_mantenimiento_preventivo"/>
+                        <field name="x_studio_contador_kit_mantenimiento"/>
+                        <field name="x_studio_contador_rodillo"/>
+                        <field name="x_studio_contador_unidad_de_imagen"/>
+                        <field name="servicio"/>
+                        <field name="x_studio_activo"/>
+                        <field name="x_studio_idservicio"/>
+                        <field name="x_studio_instalado"/>
+                        <field name="x_studio_localidad"/>
+                    </group>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
+        </form>
+      </field>
+    </record>
+
+<!--
+    <record id="stock.action_production_lot_form" model="ir.actions.act_window">
+        <field name="name">Lots/Serial Numbers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.production.lot</field>
+        <field name="view_ids"
+                   eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('stock.view_production_lot_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('stock.view_production_lot_form')})]"/>
+        <field name="search_view_id" ref="stock.search_product_lot_filter"/>
+        <field name="context">{'group_by': ['x_studio_cliente', 'x_studio_localidad_2'], 'display_complete': True, 'default_company_id': allowed_company_ids[0]}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Add a lot/serial number
+          </p><p>
+            Lots/Serial numbers help you tracking the path followed by your products.
+            From their traceability report you will see the full history of their use, as well as their composition.
+          </p>
+        </field>
+    </record> 
+-->
+  </data>
+</odoo>

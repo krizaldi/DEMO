@@ -1,0 +1,879 @@
+<odoo>
+  <data>
+
+    
+    <!-- Your List View Definition -->
+    <record model="ir.ui.view" id="view_mesa_tree">
+      <field name="name">helpdesk.mesa.tree</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="arch" type="xml">
+        <tree string="Mesa" class="mesa_de_ayuda_tree_class" create="1" delete="0" edit="1" editable="top" default_order="create_date desc">
+            
+          <!--
+              Grupo con el cual los campos solo son visibles para el usuario administrator
+              groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"
+              Grupo con el cual los campos solo son visibles para los usuarios que pueden validar una refaccion
+              groups="studio_customization.validar_refaccion_96aa2d5c-a884-4b4d-972a-a4d9c5fdbdd8"
+              Grupo solo para mesa de servicio
+              studio_customization.solo_mesa_de_servici_1076a541-66a3-41d1-a510-e0af0097df85 
+          -->
+
+          
+          <button name="cambioCotizacion" groups='helpdesk_update.group_helpdesk_cambio_a_cotizacion' type="object" icon="fa-calculator" class="iconDiagnostico" attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          <field name='x_todas_las_zonas' groups="helpdesk_update.group_helpdesk_solo_ve_administrador"  />
+          
+          <field name='datos_ticket_info' groups="helpdesk_update.group_helpdesk_solo_ve_administrador" />
+          
+          
+          <button name="detalle_mesa_wizard" icon="fa-arrows-alt" class="iconDiagnostico" type="object"  />
+          
+          <button name="cambioEstadoAtencion" icon="fa-unlock-alt" type="object" class="iconDiagnostico" groups="helpdesk_update.group_helpdesk_cambio_a_atencion_ticket_cerrado" attrs="{'invisible': [ ('stage_id', '!=', 18), ('stage_id', '!=', 4)] }" />
+          
+          <button name="helpdesk_confirmar_validar_refacciones_wizard" type="object" icon="fa-thumbs-o-up" class="iconDiagnostico" groups='helpdesk_update.group_helpdesk_valida_refaccion' attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          
+          
+          <field name="create_date" string="Fecha de creación" />
+          
+          
+          
+          
+          
+          <field name="abiertoPor" invisible="0" readonly="1"/>
+          <field name="write_date" string="Fecha de último cambio" invisible="1" />
+          <field name="write_uid" string="Ultima escritura" invisible="1" />
+          
+          <field name='ultimoDiagnosticoFecha' readonly='1' />
+          <field name='ultimoDiagnosticoUsuario' readonly='1' />
+          
+          <field name="days_difference" string="Días de atraso" readonly="1"/>
+          
+          <field name='instalado_el' attrs="{'invisible': [ ('x_studio_tipo_de_vale', '!=', 'Instalación') ]}" readonly='1' />
+          
+          <field name="x_studio_id_ticket" string="Numero de ticket test" invisible="1"/>
+          <field name="x_studio_nmero_de_ticket_cliente" string="Número de ticket cliente" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+          <field name="x_studio_refticket" widget="html" string="Número de ticket"/>
+          
+          <field name="name" string="Descripción del reporte"  width="10"  invisible="1" attrs='{"invisible": [["stage_id", "=", 1]]}'/>
+          <field name="x_studio_namedes"    string="Nombre del reporte"  width="10"  invisible="1"/>
+          
+          
+          <field name="x_studio_tipo_de_vale" string="Tipo de reporte" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          <field name="priority" widget="priority" class="estrellasListaPrioridad" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+          
+          <field name="x_studio_equipo_por_nmero_de_serie" string="Serie / Series" widget="many2many_tags" attrs='{"readonly": [["stage_id","!=",1]]}' options="{'no_create_edit': True, 'no_create': True}" invisible='1'/>
+          
+          <field name='serie_y_modelo' widget='html' readonly='1' />
+          
+          <!--<button name="detalle_serie_wizard" type="object" string="Bitacoras" icon="fa-clipboard-list" class="iconDiagnostico" attrs='{"invisible": ["|",["stage_id", "=", 1],["x_studio_equipo_por_nmero_de_serie","=",[]]]}'/>-->
+          <field name="x_studio_contadores" widget="html" string="Contadores Anteriores" readonly="1" force_save = "1" invisible="1"/>
+          <field name="contadores_anteriores" widget="html" string="Contadores Anteriores" readonly="1" force_save = "1"/>
+          <button name="contadores_wizard" type="object" icon='fa-clock-o' class="iconDiagnostico" attrs='{"invisible": [ "|", "|", "|", ["x_studio_equipo_por_nmero_de_serie","=",[]], ["contadores_anteriores", "=", False], ("stage_id", "=", 18), ("stage_id", "=", 4) ] }'/>
+          <!--
+          <button name="editar_contadores_wizard" type="object" icon='fa-edit' class="iconDiagnostico" groups='helpdesk_update.group_helpdesk_editar_contadores' attrs="{'invisible': [ '|', '|', ['x_studio_equipo_por_nmero_de_serie','=',[]], ['stage_id', '=', 18], ['stage_id', '=', 4] ]}" />
+          -->
+          <field name="datosCliente"  />
+          
+          <field name="x_studio_ultima_nota" widget="html" string="Ultima nota"/>
+          <field name="x_studio_ultima_evidencia"  widget="html" string="Ultima Evidencia"/>
+          
+          <field name='diagnosticos' invisible='1' widget='many2many_tags'/>
+          
+          <field name="team_id" string="Área de atención" attrs="{'domain': [['name','=','Mesa de Servicio']], 'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" options='{"no_create_edit": True, "no_create": True,"no_open": True}'/>
+          
+          <field name="stage_id" string="Etapa" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+          <field name="x_studio_empresas_relacionadas" invisible="1" />
+          <!--attrs='{"invisible": [["stage_id","=",18]]}'-->
+          <button name="cambio_wizard" icon="fa-user-md" class="iconDiagnostico" type="object" groups="helpdesk_update.group_helpdesk_agregar_diagnostico" />
+          
+          <field name="idLocalidadAyuda" invisible="1"/>
+          <field name="localidadContacto" options='{"no_create_edit": True, "no_create": True, "no_open": True}' attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+          <field name="direccionLocalidadText" widget="html" invisible="1" />
+          
+          <field name="contactoInterno" invisible="0" force_save = "1" readonly="1"/>
+          
+          <field name='x_studio_nmero_de_guia_1' string='Número de guía' attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+          
+          <!--
+          <button name="contacto_wizard" string="Añadir contcto a localidad" icon="fa-user-plus" class="iconDiagnostico" type="object"  attrs='{"invisible": [ "|", "|", ["x_studio_empresas_relacionadas","=", False], ("stage_id", "=", 18), ("stage_id", "=", 4) ]}' groups="studio_customization.solo_mesa_de_servici_1076a541-66a3-41d1-a510-e0af0097df85"/>
+          -->
+          <button name="contacto_wizard" icon="fa-user-plus" class="iconDiagnostico" type="object"  attrs='{"invisible": [ "|", "|", ["x_studio_empresas_relacionadas","=", False], ("stage_id", "=", 18), ("stage_id", "=", 4) ]}' groups="helpdesk_update.group_helpdesk_agregar_y_editar_contacto"/>
+          
+          <!--<field name="x_studio_tcnico" string="Técnico" options="{'no_create_edit': True, 'no_create': True}" attrs="{'invisible': [('team_id','!=',81)], 'readonly': 0 }" domain='["|",["job_id.name","=","TÉCNICO "],["job_id.name","=","SOFTWARE"]]'  />-->
+          <field name="x_studio_tcnico" string="Técnico" options="{'no_create_edit': True, 'no_create': True}" invisible='0'   /> <!-- domain='["|",["job_id.name","=","TÉCNICO "],["job_id.name","=","SOFTWARE"]]' -->
+          
+          
+          
+          
+          <field name="accesorios" string="Productos" options="{'no_create_edit': True, 'no_create': True}"  widget="many2many_tags" attrs="{'readonly': True }" invisible='1'/>
+          <field name="x_studio_productos" string="Productos" options="{'no_create_edit': True, 'no_create': True}"  widget="many2many_tags" attrs="{'readonly': True }" invisible='1'/>
+          
+          <field name='x_accesorios_text' attrs="{'readonly': True }" widget='html' />
+          
+          <button name="agregar_productos_wizard" type="object" icon="fa-tools" class="iconDiagnostico" attrs="{'invisible': [ '|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+          <button name="cambioEstadoSolicitudRefaccion" type="object" icon="fa-cart-arrow-down" class="iconDiagnostico" attrs="{'invisible': ['|','|', ['x_studio_field_nO7Xg', '!=', False], ['stage_id','=',18], ['stage_id','=',4] ]}" />
+          
+          <!--<button name="helpdesk_confirmar_validar_refacciones_wizard" string="Crear y validar solicitud" type="object" class="oe_highlight" groups='studio_customization.validar_refaccion_96aa2d5c-a884-4b4d-972a-a4d9c5fdbdd8' attrs="{'invisible': [('x_studio_field_nO7Xg', '!=', False)]}"/>-->
+          
+          
+          <field name="x_studio_field_nO7Xg" string="Pedido de venta" options="{'no_create_edit': True, 'no_create': True, 'no_open': False}" readonly="1"/>
+          
+          
+          
+          <field name='partner_id' invisible='1' />
+          <field name='estadoSolicitudDeRefaccionValidada' invisible='1' />
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          <!--<field name="documentosTecnico" string="Evidencias ticket" attrs="{'invisible': 0, 'readonly': 0, 'required': 0}" widget="many2many_binary"/>-->
+          <!--<button name="open_to_form_view" type="object" icon="fa-folder-open" string="abrir" />-->
+          
+          <button name="cambioEstadoAtencionAccion" type="object" icon="fa-phone" class="iconDiagnostico" groups="helpdesk_update.group_helpdesk_cambio_a_atencion" attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          
+          <button name="cambioResuelto" type="object" icon="fa-check" class="iconDiagnostico" attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" groups='helpdesk_update.group_helpdesk_cambio_a_resuelto' />
+          <button name="cerrar_con_comentario_wizard" type="object" icon="fa-lock" class="iconDiagnostico"  groups="helpdesk_update.group_helpdesk_cambio_a_cerrado" attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          <!--cambioCerrado-->
+          <button name="cancelar_con_comentario_wizard" type="object" icon="fa-ban" class="iconDiagnostico" groups="helpdesk_update.group_helpdesk_cambio_a_cancelado" attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          
+          
+          
+          <!--<button type="object" class="oe_highlight" string="borrar" name="unlink"/>-->
+        </tree>
+      </field>
+    </record>
+
+
+
+    <record model="ir.ui.view" id="view_mesa_todosLosTickets_tree">
+      <field name="name">helpdesk.mesa.todosLosTickets.tree</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="arch" type="xml">
+        <tree string="Todos los tickets" class="mesa_de_ayuda_tree_class" create="0" delete="0" edit="0" default_order="create_date desc">
+          <field name='datos_ticket_info' invisible="1" />
+          <field name="create_date" string="Fecha de creación" />
+          <field name="abiertoPor" invisible="0" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+          <field name="write_date" string="Fecha de último cambio" invisible="1" />
+          <field name="write_uid" string="Ultima escritura" invisible="1" />
+          <field name='ultimoDiagnosticoFecha' readonly='1' />
+          <field name='ultimoDiagnosticoUsuario' readonly='1' />
+          <field name="days_difference" string="Días de atraso" readonly="1"/>
+          <field name='instalado_el' attrs="{'invisible': [ ('x_studio_tipo_de_vale', '!=', 'Instalación') ]}" readonly='1' />
+          <field name="x_studio_tipo_de_vale" string="Tipo de reporte" />
+          <field name="stage_id" string="Etapa" invisible="0" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+          <field name="x_studio_nmero_de_ticket_cliente" string="Número de ticket cliente" readonly="1"/>
+          <field name="x_studio_refticket"  widget="html" string="Número de ticket" invisible="1"/>
+          <field name="x_studio_reftickettoner"  widget="html" string="Número de ticket toner" />
+          <field name="team_id" string="Área de atención" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+          <field name="x_studio_equipo_por_nmero_de_serie" string="Serie / Series" widget="many2many_tags" readonly="1" invisible="1"/>
+          <field name="x_studio_equipo_por_nmero_de_serie_1" string="Serie / Series" widget="many2many_tags" readonly="1" invisible='1' />
+          <field name='serie_y_modelo' widget='html' readonly='1' />
+          <button name="detalle_serie_wizard" type="object" string="Bitacoras" icon="fa-clipboard-list" class="iconDiagnostico" attrs='{"invisible": ["|",["stage_id", "=", 1],["x_studio_equipo_por_nmero_de_serie","=",[]]]}'/>
+          <field name="x_studio_contadores" widget="html" string="Contadores Anteriores" readonly="1" force_save = "1" invisible="1"/>
+          <field name="contadores_anteriores" widget="html" string="Contadores Anteriores" readonly="1" force_save = "1"/>
+          <field name="datosCliente" />
+          <field name='idLocalidadAyuda' string='idLocalidadAyuda' invisible='1'  />
+          <field name='localidadContacto' string='Localidad contacto' readonly='1' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+          <field name='primerDiagnosticoUsuario' />
+          <field name="x_studio_ultima_nota" widget="html" string="Ultima nota"/>
+          <field name="x_studio_ultima_evidencia"  widget="html" string="Ultima Evidencia"/>
+          <field name="x_studio_empresas_relacionadas" invisible="1" />
+          <field name="resuelto_el" readonly='1'/>
+          <field name="cerrado_el" readonly='1'/>
+          <field name="x_studio_tcnico" string="Técnico" options="{'no_create_edit': True, 'no_create': True}" invisible="0" domain='["|",["job_id.name","=","TÉCNICO "],["job_id.name","=","SOFTWARE"]]' readonly='1'/>
+          <field name="x_studio_activar_compatibilidad" string="Activar compatibilidad" invisible='1'/>
+          <field name="x_studio_productos" string="Productos" invisible="1" options="{'no_create_edit': True, 'no_create': True}"  widget="many2many_tags" attrs="{'readonly': ['|', '|' ,('stage_id', '=', 3), ('stage_id', '=', 18), ('x_studio_field_nO7Xg', '!=', False) ]}"/>
+          <field name="x_studio_field_nO7Xg" string="Pedido de venta" options="{'no_create_edit': True, 'no_create': True}" readonly="1"/>
+          <field name="documentosTecnico" string="Evidencias técnico" attrs="{'invisible': 1, 'readonly': 0, 'required': 0}" invisible="1" widget="many2many_binary"/>
+          <field name="accesorios" string="Productos" options="{'no_create_edit': True, 'no_create': True}"  widget="many2many_tags" attrs="{'readonly': True }" invisible='1'/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_toner_tree">
+      <field name="name">helpdesk.toner.tree</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="arch" type="xml">
+        <tree string="Toner" class="mesa_de_ayuda_tree_class" create="1" delete="0" edit="0" default_order="create_date desc">
+          <field name='datos_ticket_info' groups="helpdesk_update.group_helpdesk_solo_ve_administrador" />
+          <field name="create_date" string="Fecha de creación" />
+          <field name="abiertoPor" invisible="0" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+          <field name="write_date" string="Fecha de último cambio" invisible="1"/>
+          <field name="write_uid" string="Ultima escritura" invisible="1"/>
+          <field name='ultimoDiagnosticoFecha' readonly='1' />
+          <field name='ultimoDiagnosticoUsuario' readonly='1' />
+          <field name="days_difference" string="Días de atraso" readonly="1"/>
+          <field name='x_studio_tipo_de_vale' string='Tipo de reporte' readonly='1'/>
+          <field name="stage_id" string="Etapa" invisible="0" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+          <field name="x_studio_nmero_de_ticket_cliente" string="Número de ticket cliente" readonly="1"/>
+          <field name="x_studio_refticket"  widget="html" string="Número de ticket" invisible="1"/>
+          <field name="x_studio_reftickettoner"  widget="html" string="Número de ticket toner" />
+          <field name="team_id" string="Área de atención" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+          <field name="x_studio_equipo_por_nmero_de_serie" string="Serie / Series" widget="many2many_tags" readonly="1" invisible="1"/>
+          <field name="x_studio_equipo_por_nmero_de_serie_1" string="Serie / Series" widget="many2many_tags" readonly="1" invisible='1' />
+          <!--<button name="detalle_serie_wizard" type="object" string="Bitacoras" class="oe_highlight" attrs='{"invisible": ["|",["stage_id", "=", 1],["x_studio_equipo_por_nmero_de_serie","=",[]]]}'/>-->
+          <field name='serie_y_modelo' widget='html' readonly='1' />
+          <field name="x_studio_contadores" widget="html" string="Contadores Anteriores" readonly="1" force_save = "1" invisible="1"/>
+          <field name="contadores_anteriores" widget="html" string="Contadores Anteriores" readonly="1" force_save = "1" invisible='1'/>
+          <field name="datosCliente" />
+          <field name='idLocalidadAyuda' string='idLocalidadAyuda' invisible='1'  />
+          <field name='localidadContacto' string='Localidad contacto' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          <button name="contacto_wizard" icon="fa-user-plus" class="iconDiagnostico" type="object"  attrs='{"invisible": ["|", "|", ["x_studio_empresas_relacionadas","=", False], ("stage_id", "=", 18), ("stage_id", "=", 4) ]}' groups="helpdesk_update.group_helpdesk_agregar_y_editar_contacto"/>
+          <field name="x_studio_ultima_nota" widget="html" string="Ultima nota"/>
+          <field name="x_studio_ultima_evidencia"  widget="html" string="Ultima Evidencia"/>
+          <button name="cambio_wizard" icon="fa-user-md" class="iconDiagnostico" type="object" />
+          <field name="x_studio_empresas_relacionadas" invisible="1" />
+          <field name="x_studio_tcnico" string="Técnico" options="{'no_create_edit': True, 'no_create': True}" invisible="1" domain='["|",["job_id.name","=","TÉCNICO "],["job_id.name","=","SOFTWARE"]]' attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          <field name="x_studio_activar_compatibilidad" string="Activar compatibilidad" invisible='1'/>
+          <field name="x_studio_productos" string="Productos" invisible="1" options="{'no_create_edit': True, 'no_create': True}"  widget="many2many_tags" attrs="{'readonly': ['|', '|' ,('stage_id', '=', 3), ('stage_id', '=', 18), ('x_studio_field_nO7Xg', '!=', False) ]}"/>
+          <field name="x_studio_field_nO7Xg" string="Pedido de venta" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" readonly="1"/>
+          <field name="documentosTecnico" string="Evidencias técnico" attrs="{'invisible': 1, 'readonly': 0, 'required': 0}" invisible="1" widget="many2many_binary"/>
+          <button name="detalle_toner_wizard" icon="fa-arrows-alt" class="iconDiagnostico" type="object" />
+          <!--<button name="detalle_serie_toner_wizard" type="object" string="Bitacoras" icon="fa-clipboard-list" class="iconDiagnostico" attrs='{"invisible": [["x_studio_equipo_por_nmero_de_serie_1","=",[]]]}'/>-->
+          <button name="cerrar_con_comentario_wizard" type="object" icon="fa-lock" class="iconDiagnostico" groups="helpdesk_update.group_helpdesk_cambio_a_cerrado" attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+          <field name='x_studio_backorder' invisible='1' />
+          <field name='backorderActivo' readonly='1' />
+          <field name='mensajeBackOrder' widget='html' readonly='1' />
+        </tree>
+      </field>
+    </record>
+
+    <!-- Action Menu Item Related To Above Action Window -->
+    <record id="helpdesk.helpdesk_ticket_view_form" model="ir.ui.view">
+      <field name="name">helpdesk.ticket</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="arch" type="xml">
+        <!--vitsa original de odoo 14 
+          <form string="Helpdesk Ticket">
+              <header>
+                  <field name="is_self_assigned" invisible="1"/>
+                  <button name="assign_ticket_to_self" string="Assign To Me" type="object" class="oe_highlight" groups="helpdesk.group_helpdesk_user" attrs="{'invisible': [('is_self_assigned', '=', True)]}"/>
+                  <field name="stage_id" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>
+              </header>
+              <sheet>
+                  <field name="legend_blocked" invisible="1"/>
+                  <field name="legend_normal" invisible="1"/>
+                  <field name="legend_done" invisible="1"/>
+                  <field name="partner_ticket_count" invisible="1"/>
+                  <div class="oe_button_box" name="button_box">
+                      <button name="action_get_attachment_tree_view" class="oe_stat_button" icon="fa-book" type="object" attrs="{'invisible':  [('attachment_number', '=', 0)]}">
+                          <field name="attachment_number" widget="statinfo" string="Documents"/>
+                      </button>
+                  </div>
+                  <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                  <field name="kanban_state" widget="state_selection"/>
+                  <div class="oe_title">
+                      <h1><field name="name" class="field_name" placeholder="Subject..."/></h1>
+                      <field name="sla_status_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="1" groups="helpdesk.group_use_sla"/>
+                  </div>
+                  <group>
+                      <group>
+                          <field name="active" invisible="1"/>
+                          <field name="team_id"/>
+                          <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]" widget="many2one_avatar_user"/>
+                          <field name="domain_user_ids" invisible="1"/>
+                          <field name="ticket_type_id"/>
+                          <field name="priority" widget="priority"/>
+                          <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                          <field name="company_id" groups="base.group_multi_company"/>
+                          <field name="sla_deadline" attrs="{'invisible': [('sla_deadline', '=', False)]}" groups="helpdesk.group_use_sla"/>
+                      </group>
+                      <group>
+                          <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one"/>
+                          <field name="partner_name" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
+                          <field name="partner_email"/>
+                          <field name="email_cc" groups="base.group_no_one"/>
+                      </group>
+                  </group>
+                  <field name="description" class="field_description" placeholder="Description of the ticket..."/>
+              </sheet>
+              <div class="oe_chatter">
+                  <field name="message_follower_ids"/>
+                  <field name="activity_ids"/>
+                  <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+              </div>
+
+          </form>
+        -->
+        <form string="Helpdesk Ticket"  edit="1" >
+          <header>
+            <field name="stage_id" widget="statusbar"  attrs="{'readonly': 1}"  />      
+          </header>
+
+          <sheet>
+            <field name="kanban_state" widget="state_selection" invisible='1' />
+            
+            <group attrs="{'invisible': 1}">
+              <group>
+                  <field name="active" invisible="1"/>
+                  <field name="team_id"/>
+                  <field name="user_id" class="field_user_id" domain="['&amp;', ('id', 'in', domain_user_ids), ('share', '=', False)]" widget="many2one_avatar_user"/>
+                  <field name="domain_user_ids" invisible="1"/>
+                  <field name="ticket_type_id"/>
+                  <field name="priority" widget="priority"/>
+                  <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                  <field name="company_id" groups="base.group_multi_company"/>
+                  <field name="sla_deadline" attrs="{'invisible': [('sla_deadline', '=', False)]}" groups="helpdesk.group_use_sla"/>
+              </group>
+              <group>
+                  <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one"/>
+                  <field name="partner_name" attrs="{'invisible': [('partner_id', '!=', False)]}"/>
+                  <field name="partner_email"/>
+                  <field name="email_cc" groups="base.group_no_one"/>
+              </group>
+            </group>
+
+
+
+
+            <div class="row">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4 text-center">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="validar opciones">
+                        <button name="crearYValidarSolicitudDeToner" effect="{'message':'Exito!','fadeout':'medium'}" string="Crear y validar solicitud de tóner (Nueva forma!!!)" type="object" class="oe_highlight"  groups="studio_customization.validar_toner_d61119fe-f670-4dd0-9dee-6d2bfdd1824e" attrs="{'invisible': [ '|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Cmbiar de estados">
+                        <button name="cambioCotizacion" string="Cambiar estado a cotización" type="object" class="oe_highlight" groups="studio_customization.cambio_cotizacion_co_3157cb27-cdc9-4840-b19d-7f11ad51631a" attrs="{'invisible': [ '|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+                        
+                    </div>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Cmbiar de estados">
+                        
+                        <button name="cerrar_con_comentario_wizard" string="Cerrar ticket" type="object" icon="fa-lock" class="iconDiagnostico"  groups="studio_customization.cerrar_tickets_mesa_41c2145f-10a2-429c-b59d-4cc9ec16d613" attrs="{'invisible': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+                    </div>
+                </div>
+            </div>
+            <br/>
+            
+            <div class="oe_title">
+                <h1>
+                    <field name="name" class="field_name" string="Descripción del reporte" placeholder="Descripción del reporte..." widget="text" invisible="1"/>
+                </h1>
+            </div>
+
+            <group>
+                <group name="tipoDeReporte_left">
+                    
+                    <field name="x_studio_tipo_de_vale" string="Tipo de reporte" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+                    <field name="x_studio_refticket" string="ticket"  widget="html" invisible="1"/>
+                    
+                </group>
+                
+            </group>
+
+            <notebook name="studio_notebook_TaG67">
+              <page name="studio_page_TaG67" string="Pedido">
+                <field name="x_studio_generar_cambio" string="Generar cambio" invisible="1"/>
+                <button name="contadores_wizard" string="Capturar contadores" class="oe_highlight" type="object"  attrs="{'invisible':  ['|', '|', '|', '|', ('x_studio_tipo_de_vale', '!=', 'Requerimiento'), ('team_id', '=', 13), ('x_studio_equipo_por_nmero_de_serie', '=', []), ('stage_id', '=', 18), ('stage_id', '=', 4) ]}" />
+                <field name="x_studio_equipo_por_nmero_de_serie" 
+                       string="Equipo por número de serie" 
+                       style="width:877px" 
+                       domain="[]" 
+                       attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)], 'invisible': [('x_studio_tipo_de_vale', '=', 'Requerimiento')]}" 
+                       widget="" 
+                       context="{'default_x_studio_esconde':'x_studio_idteam'}" 
+                       options="{'no_create_edit': True, 'no_create': True}"
+                       >
+                  <tree string="Lots/Serial Numbers" editable="bottom" >
+                    
+                    <field name="x_studio_esconde" string="esconde id" invisible="1"/>
+                    <field name="name" string="Serial Number" attrs="{'readonly': 1, 'invisible': 0}" required="1" />
+                    <field name="product_id" string="Producto" />
+                    <field name="company_id" />
+                    
+                     
+                  </tree>
+                  <form string="Lots/Serial Numbers">
+                      <sheet name="studio_sheet_81b1e2">
+                          <div class="oe_button_box" name="button_box">
+                              <button name="212" icon="fa-arrows" class="oe_stat_button" string="Ubicacion" type="action" invisible="1"/>
+                              <button name="195" icon="fa-arrow-up" class="oe_stat_button" string="Reporte de Trazabilidad" type="action" invisible="1"/>
+                          </div>
+                          <div class="oe_title" name="studio_div_f03e0b">
+                              <label for="name" class="oe_edit_only"/>
+                              <h1>
+                                  <field name="name" placeholder="e.g. LOT/0001/20121" attrs="{'readonly': 1}"/>
+                              </h1>
+                          </div>
+                          
+                      </sheet>
+                      <group>
+                        <group>
+                          <field name="product_id" string="Producto" />
+                          <field name="company_id" />
+                        </group>
+                      </group>
+                  </form>
+                </field>
+
+                
+                <field name="x_studio_equipo_por_nmero_de_serie_1" attrs="{'invisible': ['|', ['x_studio_tipo_de_vale', '!=', 'Requerimiento'], ['x_studio_tipo_de_vale', '=', False] ]}">
+                  
+                  <tree>
+                    <field name="serie" string="Número de serie"/>
+                    <field name="tablahtml" string="Detalle" widget="html" readonly="1"/>
+                  </tree>
+                  <form>
+                    <group>
+                      <group>
+                        <field name="serie"/>
+                        <field name="colorEquipo" readonly="1"/>
+                        
+                        <field name="ultimaUbicacion" readonly="1"/>
+                        <field name="equipo" readonly="1"/>
+                        <field name="contadorMono" widget="numeric_step" options="{'step': 1, 'min': 0}" />
+                        <field name="contadorAnteriorNegro" readonly="1"/>
+                        <field name="contadorColor" attrs="{'invisible': [('colorEquipo', '=', 'B/N')]}" widget="numeric_step" options="{'step': 1, 'min': 0}"/>
+                        <field name="contadorAnteriorColor" attrs="{'invisible': [('colorEquipo', '=', 'B/N')], 'readonly': 1}"/>
+
+                        <field name="x_studio_cartuchonefro" /> 
+                        <field name="x_studio_rendimiento_negro" readonly="1"/>
+                        <field name="porcentajeNegro" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 100}"/>
+                        
+                        <field name="x_studio_cartucho_amarillo" attrs="{'invisible': [('colorEquipo', '=', 'B/N')]}" /> 
+                        <field name="x_studio_rendimientoa" attrs="{'invisible': [('colorEquipo', '=', 'B/N')], 'readonly': 1}"/>
+                        <field name="porcentajeAmarillo" attrs="{'invisible': [('colorEquipo', '=', 'B/N')]}" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 100}"/>
+                        <field name="x_studio_cartucho_cian_1" attrs="{'invisible': [('colorEquipo', '=', 'B/N')]}" /> 
+                        <field name="x_studio_rendimientoc" attrs="{'invisible': [('colorEquipo', '=', 'B/N')], 'readonly': 1}"/>
+                        <field name="porcentajeCian" attrs="{'invisible': [('colorEquipo', '=', 'B/N')]}" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 100}"/>
+                        <field name="x_studio_cartucho_magenta" attrs="{'invisible': [('colorEquipo', '=', 'B/N')]}" /> 
+                        <field name="x_studio_rendimientom" attrs="{'invisible': [('colorEquipo', '=', 'B/N')], 'readonly': 1}"/>
+                        <field name="porcentajeMagenta" attrs="{'invisible': [('colorEquipo', '=', 'B/N')]}" widget="numeric_step" options="{'step': 1, 'min': 0, 'max': 100}"/>
+                        
+                        <field name="x_studio_field_qYMJD" invisible="1"/>
+                        
+                      </group>
+                      <group>
+                        <field name="tablahtml" string="Detalle" widget="html" readonly="1"/>
+                      </group>
+                    </group>
+                  </form>
+                
+                </field>
+                
+
+                <group name="studio_group_TaG67">
+                  <group name="studio_group_TaG67_left">
+                      
+                      <field name="x_studio_generar_cambio" string="Generar cambio" invisible="1"/>
+                      
+                      
+                      <!--<field name="x_studio_a" string="a" invisible="1"/>-->
+                      <field name="x_studio_corte" string="Corte" attrs="{&quot;invisible&quot;: [[&quot;team_id&quot;,&quot;!=&quot;,8]]}"/>
+                      <field name='almacenes' options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"  attrs="{'invisible': [('team_id', '!=', 8)]}"/> <!--domain="['&amp;', ('x_studio_cliente', '=', False), '|', ('id', '=', 1), ('id', '=', 18) ]"-->
+                      
+                      <field name="x_studio_contador_bn" string="Contador B/N" attrs="{'invisible': 1, 'readonly': 1}"/>
+                      <field name="x_studio_contador_bn_a_capturar" string="Contador B/N a capturar" attrs="{'invisible': 1, 'readonly': 1}"/>
+                      <field name="x_studio_contador_color" string="Contador color" attrs="{'invisible': 1, 'readonly': 1}"/>
+                      <field name="x_studio_contador_color_a_capturar" string="Contador color a capturar" attrs="{'invisible': 1, 'readonly': 1}"/>
+                      <field name="x_studio_tamao_lista" string="Tamaño lista equipo por nmero serie" attrs="{'invisible': 1}"/>
+                      <field name="x_studio_activar_compatibilidad" string="Activar compatibilidad" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)], 'invisible': [('x_studio_tipo_de_vale', '=', 'Requerimiento')]}"/>
+                      
+                      <field style="color:black" name="x_studio_productos" string="Productos " domain="[]" invisible='1' options="{'no_create_edit': True, 'no_create': True}" >
+                          <tree string="Product Variants"  editable="bottom" >
+                              <field name="create_uid" string="Creado por"  invisible="1" attrs="{'invisible': 1, 'readonly': 1}"/>
+                              <!--
+                              <field name="x_studio_aadido_por" string="Añadido por"  invisible="1"  attrs="{'invisible': 1, 'readonly': 0}"/>
+                              <field name="x_studio_aadido_por_1" string="Añadido por" invisible="1" attrs="{'invisible': 1, 'readonly': 0}"/>
+                              
+                              <field name="x_studio_testuse" string="Prueba" invisible="1" attrs="{'invisible': 1, 'readonly': 1}"/>
+
+                              <field name="x_studio_field_Fj4xh" string="New Texto" invisible="1" attrs="{'invisible': 1, 'readonly': 1}"/>
+                              <field name="x_studio_currentuser" string="Usuario"  readonly="1" invisible="1" attrs="{'invisible': 0, 'readonly': 1}"/>
+                              -->
+                              <field name="categ_id" attrs="{'readonly': 1}"  required="1"/>
+                              <field name="default_code" attrs="{'readonly': 1}" />
+                              <field name="name" attrs="{'readonly': 1}"  required="1"/>
+                              <!--
+                              <field name="attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant" invisible="1"/>
+                              -->
+                              <!--
+                              <field name="lst_price" attrs="{}" readonly="1" invisible="1"/>
+
+                              <field name="standard_price" attrs="{}" readonly="1" invisible="1"/>
+
+                              <field name="type" invisible="1" required="1"/>
+                              -->
+                              <field name="price" invisible="not context.get('pricelist',False)"/>
+                              <!--
+                              <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}" readonly="1"/>
+                              <field name="virtual_available" attrs="{'invisible':[('type', '!=', 'product')]}" readonly="1"/>
+                              -->
+                              <!--
+                              <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom" attrs="{}" readonly="1" required="1" invisible="1"/>
+                              <field name="barcode" attrs="{}" invisible="1"/>
+                              -->
+                              <!--
+                              <field name="x_studio_cantidad_pedida" string="Cantidad pedida"/>
+                              -->
+                              <!--
+                              <field name="product_tmpl_id" invisible="1" required="1"/>
+                              <field name="active" invisible="1"/>
+                              -->
+                          </tree>
+                      </field>
+                      
+                      <field name='accesorios' string='Productos' context="{'default_ticketRela': id}" attrs="{&quot;invisible&quot;: [ '|', ['team_id','=',8], ('x_studio_tipo_de_vale', '=', 'Requerimiento') ], 'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" options="{'no_create_edit': True, 'no_create': True}" >
+                          <tree editable='bottom'>
+                              <field name='productos' options="{'no_create_edit': True, 'no_create': True}" required='1' />
+                              <field name='cantidadPedida' />
+                          </tree>
+                      </field>
+                      
+                      
+                      
+                      <field name="x_studio_fecha_prevista" string="Fecha Prevista" attrs="{'readonly': ['|', ('stage_id','=', 18), ('stage_id','=', 4) ], 'invisible': 1}" />
+                      
+                      <field name="x_studio_usuario" string="Usuario" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>
+                      <field name="x_studio_verificacin_de_tner" string="Verificación de tóner" attrs="{'invisible': 1, 'readonly': 0, 'required': 0}"/>
+                      
+                      <field name="x_studio_verificacin_de_refaccin" string="Verificación de refacción" attrs="{'invisible': 1, 'readonly': 0, 'required': 0}"/>
+                      <field name="x_studio_observaciones_adicionales_" string="" attrs="{'readonly': 0, 'required': 0, 'invisible': ['|', ['stage_id','!=',3],['team_id','!=',74]]}" />
+                      <field name="x_studio_prioridad" string="Prioridad" attrs="{'invisible': 1, 'readonly': 0, 'required': 0}"/>
+                      <field name="x_studio_documento_de_origen" string="Documento de origen" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>
+                      <field name="x_studio_transferencia" string="transferencia" attrs="{'invisible': 1, 'readonly': 0, 'required': 0}"/>
+                      
+                      <field name="activity_state" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>
+                      <field name="activity_summary" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>
+                      <field name="x_studio_field_nO7Xg" string="Solicitud" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly': 1, 'required': 0}" />
+                      
+                      <!--<field name="x_studio_prueba" string="Estado" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>-->
+                      <!--<field name="x_studio_field_SbRz2" string="Transfer almacen" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>-->
+                      <field name="x_studio_field_XALSC" string="Transferir distribucion" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>
+                      <!--<field name="x_transferir_surt" string="Transferir surtido" readonly="1" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>-->
+                      
+                      
+                      <field name="x_studio_field_up5pO" string="Estado en Almacén" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>
+                      <field name="x_studio_field_Le2tN" string="Estado en Distribución" attrs="{'invisible': 1, 'readonly': 1, 'required': 0}"/>
+                      
+                      
+                      <field name="x_estado_en_almacen" String="Estado en Almacén" attrs="{'readonly': 1, 'invisible': 1}"  groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                      
+                      <field name="x_estado_en_distribucion" String="Estado en Distribución" attrs="{'readonly': 1, 'invisible': 1}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                      <!--<field name="x_studio_backorder" readonly="1" />-->
+
+                  </group>
+                </group>
+                <group string="Refacciones validadas" class="text-center" invisible="[('x_studio_tipo_de_vale', '=', 'Requerimiento')]"></group>
+                <field name="validacionesRefaccion" attrs="{'readonly': 1, 'invisible': [('x_studio_tipo_de_vale', '=', 'Requerimiento')]}" >
+                  <tree>
+                    <field name="id"/>
+                    <field name="fechaDeValidacionSo"/>
+                    <field name="refaccionesValidadas" widget="html"/>
+                  </tree>
+                  <form>
+                    <group>
+                      <group>
+                        <field name="id"/>
+                      </group>
+                      <group>
+                        <field name="fechaDeValidacionSo"/>
+                      </group>
+                    </group>
+                    <field name="refaccionesValidadas" widget="html"/>
+                  </form>
+                </field>
+              </page>
+              <page name="studio_page_TaG67" string="Cliente">
+                <group name="studio_group_TaG67">
+                    <group name="studio_group_TaG67_left" string="Datos cliente" >
+                        
+                            <field name="cambiarDatosClienteCheck" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] } " />
+                            <field name="partner_id" class="field_partner_id" options="{'no_create_edit': True, 'no_create': True}" style="width:350px;" force_save="1" attrs='{"readonly": [("cambiarDatosClienteCheck","=",False)]}' />
+                            <field name="x_studio_nivel_del_cliente" string="Tipo de cliente" widget="selection_badge" attrs='{"readonly": 1}' force_save="1" />
+                            <field name="x_studio_empresas_relacionadas" options="{'no_create_edit': True, 'no_create': True}" force_save="1" domain='[&quot;&amp;&quot;,["parent_id.id","=",x_studio_id_ayuda],["type","=","delivery"]]' string="Localidad" attrs='{"readonly": [("cambiarDatosClienteCheck","=",False)]}'/>
+                            <!--<field name="tag_ids" widget="many2many_tags"  options="{'color_field': 'color', 'no_create_edit': True, 'no_create': True}" />-->
+
+                            <field name="x_studio_zona_cliente" attrs="{'readonly': 1, 'invisible': 1}" />
+                            <field name="x_studio_contacto" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly': 1, 'invisible': 1}" />
+                            <field name="partner_name" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            <field name="partner_email" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            <field name="x_studio_telefono" string="Teléfono del cliente" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            <field name="x_studio_movil" string="Móvil del cliente" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            <field name="x_studio_id_ayuda" string="id ayuda" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            
+                            
+                            <field name="idLocalidadAyuda" attrs="{'readonly': 1, 'invisible': 1}" string="id Localidad Ayuda"/>
+                          
+                            <field name="x_studio_valor_categria_de_producto" string="Valor categria de producto" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            <field name="x_studio_tipo_de_producto" string="Tipo de producto" attrs="{'invisible': 1, 'readonly': 1}" />
+                            
+                            <field name="x_studio_id_cliente" string="id cliente" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            <field name="x_studio_filtro_numeros_de_serie" string="id localidad" attrs="{'readonly': 1, 'invisible': 1}"/>
+                            <field name="x_studio_localidad_id" string="localidad_id" attrs="{'readonly': 1, 'invisible': 1}"/>
+            
+                            <button name="contacto_wizard" icon="fa-user-plus" type="object" attrs='{"invisible": [ "|", "|", ["cambiarDatosClienteCheck", "=", False], ("stage_id", "=", 18), ("stage_id", "=", 4) ]}' groups="helpdesk_update.group_helpdesk_agregar_y_editar_contacto"/>
+                    </group>
+                    <group name="studio_group_TaG67_right" string=" ">
+                      <field name="idClienteAyuda" attrs="{'readonly': 1, 'invisible': 1}" string="id Cliente Ayuda"/>
+                      <field name="x_studio_field_6furK" string="Zona localidad" attrs='{"readonly": [("cambiarDatosClienteCheck","=",False)]}' force_save="1"/>
+                      
+                      
+                      <field name="localidadContacto" string="Localidad Contacto" options="{'no_create_edit': True, 'no_create': True}" domain='[&quot;&amp;&quot;, &quot;&amp;&quot;, "|",["parent_id.id","=",idLocalidadAyuda], ["parent_id.id","=",idClienteAyuda], ["type","=","contact"], ["x_studio_cobranza_o_facturacin", "=", False] ]' style="width:350px" attrs='{"readonly": [("cambiarDatosClienteCheck","=",False)]}'/>
+                      <field name="x_studio_estado_de_localidad" readonly="1"/>
+                    </group>
+                    
+                </group>
+                <group>
+                    <group>
+                        <button name="contacto_wizard" string="Añadir contacto a localidad" type="object" class="oe_highlight btn-sm" groups="studio_customization.agregar_y_editar_contactos_desde_ticket,studio_customization.tfs" attrs='{"invisible": ["|", "|", ("cambiarDatosClienteCheck","=",False), ("stage_id", "=", 18), ("stage_id", "=", 4) ]}'/>
+                    </group>
+                </group>
+                <group name="localidadDatos">
+                    <group name="localidadDatos_left">
+                        <field name="telefonoLocalidadContacto" string="Télefono localidad contacto" attrs="{'readonly': 1}"/>
+                        <field name="movilLocalidadContacto" string="Movil localidad contacto" attrs="{'readonly': 1}"/>
+                        <field name="correoLocalidadContacto" string="Correo electrónico localidad contacto" attrs="{'readonly': 1}"/>
+                        
+                        <field name="x_studio_correo_electrnico_de_localidad" string="Correo electrónico de localidad" attrs="{'invisible': 1}"/>
+                        <field name="x_studio_telefono_localidad" string="Teléfono locaidad" attrs="{'invisible': 1}"/>
+                        <field name="x_studio_movil_localidad" string="Movil locaidad" attrs="{'invisible': 1}"/>
+                    </group>
+                    <group name="localidadDatos_right">
+                        
+                        <field name="direccionLocalidadText" widget="html" force_save='1'/>
+                        
+                    </group>
+                </group>
+              </page>
+
+              <page name="studio_page_TaG67" string="Datos del ticket">
+                <group name="studio_group_TaG67">
+                    <group name="studio_group_TaG67_left">
+                        
+                        <field name="create_date" attrs="{'readonly': 1}"/>
+                        <field name="x_studio_id_ticket" string="número de ticket" attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <field name="x_studio_nombretmp" string="NombreTMP" attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <field name="x_studio_series" string="series" attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <field name="x_studio_series2" string="series2" attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <field name="x_studio_idteam" attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <field name="x_studio_numero_de_ticket_cliente" attrs="{'invisible': 1}"></field>
+                        <field name="id" attrs="{'invisible': 1}"/>
+                        
+                        
+                        <field name="team_id" string="Área de atención" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+                        <field name="user_id" string="Ejecutivo" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" class="field_user_id" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+                        
+                        
+                        <field name="x_studio_responsable_de_equipo" string="Encargado de área" options="{'no_create_edit': True, 'no_create': True}" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+                        <field name="x_studio_tcnico" string="Técnico" attrs="{'invisible': [('team_id', '=', 8)], 'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+
+                        <field name="x_studio_desactivar_zona" string="Desactivar zona" attrs="{'invisible': 1}" />
+                        <field name="estatus_techra" string="Estatus techra" attrs="{'invisible': 1}"/>
+                        <field name="x_studio_field_wK7RR" string="Contactos foráneos" attrs="{'invisible': [['team_id','!=',11]]}" domain='[["x_studio_distribuidor","=",True]]' options="{'no_create_edit': True, 'no_create': True}"/>
+                        
+                        <!--<field name="x_studio_tcnico" string="Técnico" options="{'no_create_edit': True, 'no_create': True}" invisible="0" domain='["|",["job_id.name","=","TÉCNICO "],["job_id.name","=","SOFTWARE"]]' />-->
+                        <field name="x_studio_fecha_de_visita" string="Fecha de visita" attrs='{"invisible": 1}' />
+                        <field name="company_id" groups="base.group_multi_company" attrs="{'invisible': 1}"/>
+                        <!--
+                        <field name="deadline" readonly="1" attrs="{'invisible': [('deadline', '=', False)]}"/>
+                        <field name="sla_id" invisible="1" readonly="1"/>
+                        -->
+                        
+                    </group>
+                    <group name="studio_group_TaG67_right">
+                        <!--<field name="x_studio_das_de_atraso" invisible="1" readonly="[&quot;&amp;&quot;,['x_studio_prueba','=','Atencion'],['team_id','!=',8]]"/>-->
+                        <field name="days_difference" string="Días de atraso" attrs="{'readonly': 1}"/>
+                        <field name="tiempoDeAtrasoTicket" attrs="{'readonly': 1}" widget='html'/>
+                        
+                        <field name="priority" widget="priority" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+                        <field name="x_studio_zona" string="Zona" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)]}" />
+                        <field name="zona_estados" string="Zona Estados" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)]}" />
+                        
+                    </group>
+                    
+                    
+                    
+                    <group name="numeroTicket">
+                        <group>
+                            <field name="x_studio_nmero_de_ticket_cliente" string="Número de ticket cliente" widget="text"  attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+                            <field name="x_studio_nmero_ticket_distribuidor_1" string="Número de ticket distribuidor" widget="text"  attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }"/>
+                        </group>
+                        <group>
+                            <field name="x_studio_nmero_de_guia_1" string="Número de guía" widget="text" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+                        </group>
+                        
+                    </group>
+                    
+                    <field name="description"  placeholder="Description of the ticket..." invisible="1" />
+                    
+                    <group>
+                        <field name="x_studio_comentarios_de_localidad" string="Comentarios de localidad" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)] }" />
+                    </group>
+                    
+                    <group name="studio_group_TaG67">
+                        
+                        <field invisible="1" name="x_studio_evidencia_distribuidor_filename" attrs="{'readonly': 0}"/>
+                        <field filename="x_studio_evidencia_distribuidor_filename" name="x_studio_evidencia_distribuidor" string="Evidencia Distribuidor" attrs="{'readonly': 1}"/>
+                    
+                        <field name="ultimoEvidencia" string="Evidencia diagnostico" attrs="{'invisible': 1, 'readonly': 0, 'required': 0}" widget="many2many_binary"/>
+                    
+                        <field name="x_studio_ultimoestado_1" string="ultimoEstado" attrs="{'readonly': 1, 'invisible': 1}" />
+                        
+                        <field name="x_studio_ultima_nota" string="Ultima Nota." widget="html" attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <field name="x_studio_fecha_nota" string="Fecha Nota." attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <!--<field name="x_studio_equipo_por_nmero_de_serie_2" string="Equipo por numero de serie 2" attrs="{'readonly': 1, 'invisible': 1}"/>-->
+                        <field name="x_studio_numero_serie_text" string="numero serie text" attrs="{'readonly': 1, 'invisible': 1}"/>
+                        <field name="x_studio_nombre_equipo" string="nombre equipó" attrs="{'readonly': 1, 'invisible': 1}"/>
+                    </group>
+                    
+                </group>
+              </page>
+              <page string='Días de atraso'>
+                  <group>
+                      <group>
+                          <field name="tiempoDeAtrasoTicket" attrs="{'readonly': 1}" widget='html'/>
+                          <field name="tiempoDeAtrasoRepartidor" attrs="{'readonly': 1}" widget='html'/>
+                      </group>
+                      <group>
+                          <field name="tiempoDeAtrasoAlmacen" attrs="{'readonly': 1}" widget='html'/>
+                          <field name="tiempoDeAtrasoDistribucion" attrs="{'readonly': 1}" widget='html'/>
+                      </group>
+                  </group>
+              </page>
+
+
+
+
+            </notebook>
+
+            <group string="Diagnostico" class="text-center"></group>
+                  
+            <field name="diagnosticos" context="{'default_estadoTicket': x_studio_ultimoestado_1}" attrs="{'readonly': ['|', ('stage_id', '=', 18), ('stage_id', '=', 4)]}" delete="false" edit="0">
+              <tree>
+                <field name="id"/>
+                <field name="create_date"/>
+                <field name="estadoTicket"/>
+                <field name="comentario"/>
+                <field name="create_uid"/>
+                <field name="evidencia"/>
+                <field name="mostrarComentario"/>
+              </tree>
+              <form>
+                <group>
+                  <group>
+                    <field name="comentario" readonly="1"/>
+                  </group>
+                  <group>
+                    <field name="evidencia" readonly="1" widget="many2many_binary"/>
+                    <field name="mostrarComentario" readonly="1"/>
+                  </group>
+                </group>
+              </form>
+            </field>
+            
+            <field name="x_studio_ultima_evidencia" widget="html" string="Ultima Evidencia"/>
+            
+            <group>
+                
+                <group name="datosTicket" string="Datos Ticket" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea">
+                    <field name="estadoAsignacion" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoAtencion" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoSolicitudDeRefaccion" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoSolicitudDeRefaccionValidada" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoResuelto" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoCotizacion" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoResueltoPorDocTecnico" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoCerrado" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoCancelado" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoSolicitudDeToner" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoSolicitudDeTonerValidar" attrs="{&quot;invisible&quot;: 0}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    <field name="estadoAbierto" attrs="{'invisible': 1}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+                    
+                    <field name="contadores_anteriores" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea" />
+                    
+                </group>
+                
+            </group>
+
+            <group> 
+                
+                <group>
+                    <field name="x_studio_evidencia_1" string="Evidencia" attrs='{"invisible": [["stage_id", "!=", 3]]}'/>
+                </group>
+                <group>
+                </group>
+            </group>
+
+
+          </sheet>
+
+        </form>
+        <div class="oe_chatter" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea">
+            <field name="message_follower_ids" widget="mail_followers" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+            <field name="activity_ids" widget="mail_activity" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+            <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}" groups="studio_customization.solo_ve_administrado_cdc8f213-5aa2-4d44-bfab-99a7efd7f7ea"/>
+        </div>
+      </field>
+    </record>
+
+    <!-- Your Action Window Definition -->
+    <record model="ir.actions.act_window" id="mesa_action_window">
+      <field name="name">mesa</field>
+      <field name="res_model">helpdesk.ticket</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_mesa_tree"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="toner_action_window">
+      <field name="name">Toner</field>
+      <field name="res_model">helpdesk.ticket</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_toner_tree"/>
+    </record> 
+
+    <record model="ir.actions.act_window" id="todos_los_tickets_action_window">
+      <field name="name">todos los tickets</field>
+      <field name="res_model">helpdesk.ticket</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_mesa_todosLosTickets_tree"/>
+    </record>
+
+    <record model="ir.actions.act_window" id="bitacora_action_window">
+      <field name="name">bitacora</field>
+      <field name="res_model">stock.production.lot</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="stock.view_production_lot_tree"/>
+    </record>
+
+    <menuitem id="mesa_root"
+              name="Mesa"
+              web_icon="helpdesk_update, static/description/helpdesk-icon.png"
+              />
+    <menuitem id="mesa_de_servicio"
+              name="Mesa de servicio"
+              parent="mesa_root"
+              sequence="0"
+              action="mesa_action_window"
+              />
+    <menuitem id="toner_vista"
+              name="Toner"
+              parent="mesa_root"
+              sequence="1"
+              action="toner_action_window"
+              />
+    <menuitem id="mesa_de_servicio_todos_los_tickets"
+              name="Todos los tickets"
+              parent="mesa_root"
+              sequence="2"
+              action="todos_los_tickets_action_window"
+              />
+    <menuitem id="mesa_de_servicio_bitacora"
+              name="Bitacora"
+              parent="mesa_root"
+              sequence="3"
+              action="bitacora_action_window"
+              />
+
+  </data>
+</odoo>

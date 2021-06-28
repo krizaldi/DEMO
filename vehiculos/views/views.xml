@@ -1,0 +1,99 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="automovil_list">
+      <field name="name">automovil.list</field>
+      <field name="model">automovil</field>
+      <field name="arch" type="xml">
+        <tree string="Automovil">
+            <field name="name" modifiers="{}"/>
+            <field name="modelo" modifiers="{}"/>
+            <field name="ano_modelo" modifiers="{}"/>
+            <field name="fecha_adquisicion" modifiers="{}"/>
+        </tree>
+      </field>
+    </record>
+  
+    <record model="ir.ui.view" id="automovil_form">
+      <field name="name">automovil.form</field>
+      <field name="model">automovil</field>
+      <field name="arch" type="xml">
+        <form>
+              <sheet>
+        <header></header>
+        <div class="oe_button_box" name="button_box">
+            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                <field name="active" widget="boolean_button" options="{&quot;terminology&quot;: &quot;archive&quot;}"/>
+            </button>
+            <!--<button class="oe_stat_button" icon="fa-file-o" type="action" name="1534">
+                <field name="x_rel_vehiculo__registro_odometro_count" string="Odometros" widget="statinfo"/>
+            </button>-->
+        </div>
+        <field name="imagen" widget="image" class="oe_avatar"/>
+        <div class="oe_title">
+            <label for="modelo" class="oe_edit_only"/>
+            <h1>
+                <field name="modelo" placeholder="e.g. Model S"/>
+            </h1>
+            <label for="license_plate" class="oe_edit_only"/>
+            <h2>
+                <field name="license_plate" class="oe_inline" placeholder="e.g. PAE 326"/>
+            </h2>
+        </div>
+        <group>
+            <group>
+                <field name="driver_id"/>
+                <field name="ubicacion"/>
+                <field name="vin_sn"/>
+                <field name="ano_modelo"/>
+                <field name="compania" groups="base.group_multi_company"/>
+            </group>
+            <group>
+                <label for="odometro"/>
+                <div class="o_row">
+                    <field name="odometro"/>
+                    <field name="unidad_odometro"/>
+                </div>
+                <field name="fecha_adquisicion"/>
+                <field name="valor_auto"/>
+            </group>
+        </group>
+        <group>
+            <group string="Additional Properties">
+                <field name="asientos"/>
+                <field name="puertas"/>
+                <field name="color"/>
+            </group>
+            <group string="Engine Options">
+                <field name="transmision"/>
+                <field name="fuel_type"/>
+                <field name="caballos"/>
+            </group>
+        </group>
+    </sheet>
+    <div class="oe_chatter">
+        <field name="message_follower_ids" widget="mail_followers"/>
+        <field name="message_ids" widget="mail_thread"/>
+    </div>
+        </form>
+      </field>
+    </record>
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="automovil_action_window">
+      <field name="name">automovil</field>
+      <field name="res_model">automovil</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Top menu item -->
+    <!--Abuelo con accion de inicio-->
+    <!--<menuitem name="vehiculos" id="vehiculos.menu_root" action="automovil_action_window" web_icon="vehiculos,static/description/vehiculo.jpeg"/>-->
+    <!--Padre sin accion relacionado con su padre-->
+    <menuitem name="Distribucion" id="distribucion_menu" parent="stock.menu_stock_root" sequence="5"/>
+    <!--Nieto con accion -->
+    <menuitem name="Vehiculos" id="vehiculos_menu" parent="distribucion_menu" action="automovil_action_window" />
+    <!--<menuitem name="Ruta" id="ruta.menu" parent="distribucion_menu" action="automovil_action_window" />-->
+
+  </data>
+</odoo>

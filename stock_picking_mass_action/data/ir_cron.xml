@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir_cron_check_assign_all" model="ir.cron">
+        <field name="name">Check Availability of Stock Picking</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="False" name="active"/>
+        <field name="model_id" ref="stock.model_stock_picking" />
+        <field name="state">code</field>
+        <field name="code">model.check_assign_all()</field>
+    </record>
+    <record id="save_history_quant" model="ir.cron">
+        <field name="name">Guardar hiistorial de Inventario</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field name="model_id" ref="stock.model_stock_quant" />
+        <field name="state">code</field>
+        <field name="code">model.archivaReporte()</field>
+    </record>
+
+  <record model="product.category" id="cat_toner"> 
+    <field name="name">Toner</field> 
+  </record>
+    <record model="product.category" id="cat_servicio"> 
+    <field name="name">Servicio</field> 
+  </record>
+    <record model="product.category" id="cat_refaccion"> 
+    <field name="name">Refacción</field> 
+  </record>
+    <record model="product.category" id="cat_producto"> 
+    <field name="name">Producto</field> 
+  </record>
+    <record model="product.category" id="cat_kit"> 
+    <field name="name">Kit de mtt</field> 
+  </record>
+      <record model="product.category" id="cat_conect"> 
+    <field name="name">Conectivity</field> 
+  </record>
+      <record model="product.category" id="cat_accesorio"> 
+    <field name="name">Accesorio</field> 
+  </record>
+      <record model="product.category" id="cat_software"> 
+    <field name="name">Software</field> 
+  </record>
+      <record model="product.category" id="cat_equipo"> 
+    <field name="name">Equipo</field> 
+  </record>
+</odoo>

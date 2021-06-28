@@ -1,0 +1,141 @@
+<odoo>
+	<data>
+
+		
+		<record id="view_contrato_tree" model="ir.ui.view">
+      		<field name="name">contrato.tree</field>
+      		<field name="model">contrato</field>
+      		<field name="arch" type="xml">
+      			<tree>
+      				<field name="name"/>
+      			</tree>
+      		</field>
+      	</record>
+
+		<record id="view_contrato_form" model="ir.ui.view">
+      		<field name="name">contrato.form</field>
+      		<field name="model">contrato</field>
+      		<field name="arch" type="xml">
+				<form string="Contrato">
+					<sheet string="Contratos">
+						<group col="4">
+							<field name="name" modifiers="{}"/>
+							<newline/>
+							<field name="servicio" colspan="4" modifiers="{}"/>
+							<newline/>
+							<field name="ci" modifiers="{}"/>
+							<field name="c" modifiers="{}"/>
+							<field name="ac" modifiers="{}"/>
+							<field name="cs" modifiers="{}"/>
+							<field name="idal" modifiers="{}"/>
+							<newline/>
+							<field name="dividirLocalidades" modifiers="{}"/>
+							<field name="dividirServicios" modifiers="{}"/>
+							<field name="dividirExcedentes" modifiers="{}"/>
+							<field name="mostrarUbicaciones" modifiers="{}"/>
+							<field name="cliente" can_create="true" can_write="true" modifiers="{}"/>
+							<field name="idtmpp" modifiers="{}"/>
+							<field name="tipoDeCliente" modifiers="{}"/>
+							<field name="mesaDeAyudaPropia" modifiers="{}"/>
+							<field name="ejecutivoDeCuenta" can_create="true" can_write="true" modifiers="{}"/>
+							<field name="vendedor" can_create="true" can_write="true" modifiers="{}"/>
+							<field name="tipoDeContrato" modifiers="{}"/>
+							<field name="vigenciaDelContrato" modifiers="{}"/>
+							<field name="fechaDeInicioDeContrato" modifiers="{}"/>
+							<field name="fechaDeFinDeContrato" on_change="1" modifiers="{}"/>
+							<field name="fechaDeFirmaDeContrato" modifiers="{}"/>
+							<newline/>
+							<field name="ordenDeCompra" colspan="4" modifiers="{}"/>
+							<newline/>
+							<newline/>
+							<field name="instruccionesOrdenDeCompra" colspan="4" modifiers="{}"/>
+							<newline/>
+							<field name="tonerGenerico" modifiers="{}"/>
+							<field name="equiposNuevos" modifiers="{}"/>
+							<field name="periodicidad" modifiers="{}"/>
+							<field name="idTechraRef" modifiers="{}"/>
+							<field name="adjuntos" modifiers="{}"/>
+							<newline/>
+							<field name="rfcCliente" can_create="true" can_write="true" modifiers="{}"/>
+							<field name="formaDePago" modifiers="{}"/>
+							<field name="banco" modifiers="{}"/>
+							<field name="cuentaBancaria" modifiers="{}"/>
+							<field name="formaDePagoComplemento" modifiers="{}"/>
+							<field name="metodPago" modifiers="{}"/>
+							<field name="numCuenta" modifiers="{}"/>
+							<newline/>
+							<field name="numCuentaT" colspan="4" modifiers="{}"/>
+							<newline/>
+							<field name="razonSocial" modifiers="{}"/>
+							<field name="usoCFDI" modifiers="{}"/>
+							<field name="diasCredito" modifiers="{}"/>
+							<field name="limbo" modifiers="{}"/>
+							<field name="activo" modifiers="{}"/>
+							<newline/>
+							<field name="direccion" colspan="4" modifiers="{}"/>
+							<newline/>
+							<field name="estado" modifiers="{}"/>
+							<field name="codPostal" modifiers="{}"/>
+							<newline/>
+							<field name="calle" colspan="4" modifiers="{}"/>
+							<newline/>
+							<newline/>
+							<field name="exterior" colspan="4" modifiers="{}"/>
+							<newline/>
+							<newline/>
+							<field name="interior" colspan="4" modifiers="{}"/>
+							<newline/>
+							<newline/>
+							<field name="colonia" colspan="4" modifiers="{}"/>
+							<newline/>
+							<newline/>
+							<field name="delegacion" colspan="4" modifiers="{}"/>
+							<newline/>
+							<field name="pago" modifiers="{}"/>
+							<separator/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="contrato_action_window" model="ir.actions.act_window">
+      		<field name="name">Contrato</field>
+      		<!--<field name="type">ir.action.act_window</field>-->
+      		<field name="res_model">contrato</field>
+      		<field name="view_mode">tree,form</field>
+    	</record>
+    	
+
+    	
+
+    	<record model="ir.actions.act_window" id="contratos_action_window">
+		    <field name="name">Contratos</field>
+			<field name="res_model">contrato</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_contrato_tree"/>
+	    </record>
+
+
+    	<menuitem id="contrato_root"
+			      name="Contrato"
+			      web_icon="servicios_gnsys, static/description/contrato.png"
+    	/>
+    	
+    	<menuitem id="contratos"
+              name="Contratos"
+              parent="contrato_root"
+              sequence="0"
+              action="contratos_action_window"
+              />
+    	
+    	<!--
+    	<menuitem id="contrato_contrato"
+    			  name="Contrato"
+    			  sequence="40"
+				  parent="account_accountant.menu_accounting"
+				  action="contrato_action_window"
+    	/>
+		-->
+	</data>
+</odoo>
